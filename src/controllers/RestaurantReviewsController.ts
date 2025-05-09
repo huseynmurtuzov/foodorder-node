@@ -121,7 +121,7 @@ const GetCustomerReviews = async(req:Request,res:Response):Promise<void> => {
 }
 
 
-export default{
+export {
 GetAllRestaurantReviews,
 GetRestaurantReviewById,
 UpdateRestaurantReviews,

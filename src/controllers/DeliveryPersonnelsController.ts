@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { DeliveryPersonnelResponseDTO } from "../dto/DeliveryPersonnelResponseDTO";
 import { BadRequestError } from "../errors/bad-request";
 import { ServerError } from "../errors/server";
+import { NotFoundError } from "../errors/not-found";
 
 const deliveryPersonnelRepo = dataSource.getRepository(DeliveryPersonnel)
 
@@ -67,10 +68,24 @@ const DeleteDeliveryPersonnel = async(req:Request,res:Response):Promise<void> =>
 }
 
 const GetDeliveryPersonnelPerformanceById = async(req:Request,res:Response):Promise<void> => {
-    
+    const {id} = req.params;
+    const deliveryPersonnel = await deliveryPersonnelRepo.findOne({where:{id:Number(id)}});
+    if(!deliveryPersonnel){
+        throw new NotFoundError("No delivery personnel found with given id!")
+    }
+    const result = await dataSource.query(
+    `SELECT 
+        DeliveryPersonnelId, 
+        DeliveryPersonnelName, 
+        TotalDeliveredOrders
+    FROM vw_DeliveryPersonnelPerformance
+    WHERE DeliveryPersonnelId = ?`,
+    [id]
+    );
+    res.status(StatusCodes.OK).json({result})
 }
 
-export default{
+export {
     GetAllDeliveryPersonnels,
     GetDeliveryPersonnelById,
     UpdateDeliveryPersonnel,

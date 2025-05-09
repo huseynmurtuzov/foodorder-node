@@ -69,7 +69,7 @@ const AnyUnreadNotification = async(req:Request,res:Response):Promise<void> => {
 
 //     res.status(201).json({ message: "Notification sent" });
 // }
-export default {
+export  {
     GetUserNotifications,
     SetAsRead,
     AnyUnreadNotification

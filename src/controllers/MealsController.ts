@@ -23,7 +23,7 @@ const GetMealById = async(req:Request,res:Response):Promise<void> => {
     res.status(StatusCodes.OK).json({meal})
 }
 
-const AddMeals = async(req:Request,res:Response):Promise<void> => {
+const AddMeal = async(req:Request,res:Response):Promise<void> => {
     const {name,price,description,isAvailable,image,quantity,restaurantId} = req.body;
     if (!name || !price || !restaurantId || !description || !isAvailable || !image ||!quantity){
         throw new BadRequestError("Please provide all the values");
@@ -88,7 +88,7 @@ const DeleteMeal = async(req:Request,res:Response):Promise<void> => {
 }
 
 const SearchMeals = async(req:Request,res:Response):Promise<void> => {
-    const {meal} = req.query;
+    const {meal} = req.params;
 
     if (!meal || typeof meal !== "string") {
         throw new BadRequestError("Name query param is required");
@@ -118,10 +118,10 @@ const getMealsOfRestaurant = async(req:Request,res:Response):Promise<void> => {
     }
 }
 
-export default {
+export {
     GetAllMeals,
     GetMealById,
-    AddMeals,
+    AddMeal,
     UpdateMeal,
     DeleteMeal,
     SearchMeals,

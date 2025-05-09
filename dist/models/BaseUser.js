@@ -33,6 +33,11 @@ let User = class User {
             this.password = yield bcryptjs_1.default.hash(this.password, salt);
         });
     }
+    comparePassword(candidatePassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield bcryptjs_1.default.compare(candidatePassword, this.password);
+        });
+    }
 };
 exports.User = User;
 __decorate([

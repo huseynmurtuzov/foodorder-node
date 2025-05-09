@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DeleteCustomer = exports.EditCustomer = exports.GetCustomerById = exports.GetAllCustomers = void 0;
 const Customer_1 = require("../models/Customer");
 const dataSource_1 = __importDefault(require("../dataSource/dataSource"));
 const http_status_codes_1 = require("http-status-codes");
@@ -29,6 +30,7 @@ const GetAllCustomers = (req, res) => __awaiter(void 0, void 0, void 0, function
     });
     res.status(http_status_codes_1.StatusCodes.OK).json({ returnCustomers });
 });
+exports.GetAllCustomers = GetAllCustomers;
 const GetCustomerById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let customer = yield customerRepo.findOne({ where: { id: Number(req.params.id) } });
     if (!customer) {
@@ -37,9 +39,10 @@ const GetCustomerById = (req, res) => __awaiter(void 0, void 0, void 0, function
     let dto = new CustomerResponseDTO_1.CustomerResponseDTO(customer.id, customer.role, customer.name, customer.email, customer.phoneNumber, customer.address);
     res.status(http_status_codes_1.StatusCodes.OK).json({ dto });
 });
+exports.GetCustomerById = GetCustomerById;
 const EditCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, phoneNumber, address } = req.body;
-    let id = req.params;
+    let { id } = req.params;
     if (!id || !name || !phoneNumber || !address) {
         throw new bad_request_1.BadRequestError("Please provide all the values");
     }
@@ -58,6 +61,7 @@ const EditCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.EditCustomer = EditCustomer;
 const DeleteCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (!id) {
@@ -75,9 +79,4 @@ const DeleteCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function*
         throw new server_1.ServerError("There is some problem while deleting the data!");
     }
 });
-exports.default = {
-    GetAllCustomers,
-    GetCustomerById,
-    EditCustomer,
-    DeleteCustomer
-};
+exports.DeleteCustomer = DeleteCustomer;

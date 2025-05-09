@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GetOrdersByRestaurant = exports.GetOrdersByDeliveryPersonnel = exports.GetOrdersByCustomer = exports.CancelOrder = exports.SetAsDelivered = exports.SetAsPrepared = exports.AddOrder = exports.GetOrderById = exports.GetAllOrders = void 0;
 const dataSource_1 = __importDefault(require("../dataSource/dataSource"));
 const Order_1 = require("../models/Order");
 const http_status_codes_1 = require("http-status-codes");
@@ -34,6 +35,7 @@ const GetAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const orders = yield orderRepo.find();
     res.status(http_status_codes_1.StatusCodes.OK).json({ orders });
 });
+exports.GetAllOrders = GetAllOrders;
 const GetOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const order = yield orderRepo.findOne({ where: { id: Number(req.params.id) } });
     if (!order) {
@@ -41,6 +43,7 @@ const GetOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     res.status(http_status_codes_1.StatusCodes.OK).json({ order });
 });
+exports.GetOrderById = GetOrderById;
 const SetAsDelivered = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     let order = yield orderRepo.findOne({ where: { id: Number(id) } });
@@ -56,6 +59,7 @@ const SetAsDelivered = (req, res) => __awaiter(void 0, void 0, void 0, function*
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.SetAsDelivered = SetAsDelivered;
 const SetAsPrepared = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     let order = yield orderRepo.findOne({ where: { id: Number(id) } });
@@ -71,6 +75,7 @@ const SetAsPrepared = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.SetAsPrepared = SetAsPrepared;
 //u gotta come back to that
 const AddOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { customerId, restaurantId, meals, paymentMethod } = req.body;
@@ -129,6 +134,7 @@ const AddOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.AddOrder = AddOrder;
 const CancelOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     let order = yield orderRepo.findOne({ where: { id: Number(id) } });
@@ -144,6 +150,7 @@ const CancelOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.CancelOrder = CancelOrder;
 const GetOrdersByRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { restaurantId } = req.params;
     if (!restaurantId) {
@@ -161,6 +168,7 @@ const GetOrdersByRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, fu
         throw new server_1.ServerError("There was some problem during fetching restaurant orders");
     }
 });
+exports.GetOrdersByRestaurant = GetOrdersByRestaurant;
 const GetOrdersByCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { customerId } = req.params;
     if (!customerId) {
@@ -178,6 +186,7 @@ const GetOrdersByCustomer = (req, res) => __awaiter(void 0, void 0, void 0, func
         throw new server_1.ServerError("There was some problem during fetching customer orders");
     }
 });
+exports.GetOrdersByCustomer = GetOrdersByCustomer;
 const GetOrdersByDeliveryPersonnel = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { deliveryPersonnelId } = req.params;
     if (!deliveryPersonnelId) {
@@ -195,14 +204,4 @@ const GetOrdersByDeliveryPersonnel = (req, res) => __awaiter(void 0, void 0, voi
         throw new server_1.ServerError("There was some problem during fetching delivery personnel orders");
     }
 });
-exports.default = {
-    GetAllOrders,
-    GetOrderById,
-    AddOrder,
-    SetAsPrepared,
-    SetAsDelivered,
-    CancelOrder,
-    GetOrdersByCustomer,
-    GetOrdersByDeliveryPersonnel,
-    GetOrdersByRestaurant
-};
+exports.GetOrdersByDeliveryPersonnel = GetOrdersByDeliveryPersonnel;

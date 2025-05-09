@@ -1,6 +1,6 @@
 import { UnauthenticatedError } from '../errors/unauthenticated';
 import { UnauthorizedError } from '../errors/unauthorized';
-import isTokenValid from '../utils/functions/jwtFunctions';
+import {isTokenValid} from '../utils/functions/jwtFunctions';
 import { NextFunction, Request,Response } from 'express';
 const authenticateUser = async(req:any,res:Response,next:NextFunction) => {
     const token = req.signedCookies.token;
@@ -25,7 +25,7 @@ const authorizePermissions = (...roles:any) => {
     }
 }
 
-export default {
+export  {
     authenticateUser,
     authorizePermissions
 }

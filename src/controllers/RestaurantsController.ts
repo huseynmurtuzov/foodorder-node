@@ -90,7 +90,7 @@ const GetTotalAmount = async(req:Request,res:Response):Promise<void> => {
 }
 
 const SearchRestaurants = async(req:Request,res:Response):Promise<void> => {
-    const {restaurant} = req.query;
+    const {restaurant} = req.params;
 
     if (!restaurant || typeof restaurant !== "string") {
         throw new BadRequestError("Name query param is required");
@@ -103,7 +103,7 @@ const SearchRestaurants = async(req:Request,res:Response):Promise<void> => {
     res.status(StatusCodes.OK).json({ restaurants });
 }
 
-export default {
+export {
     GetAllRestaurants,
     GetRestaurantById,
     UpdateRestaurant,

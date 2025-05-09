@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AnyUnreadNotification = exports.SetAsRead = exports.GetUserNotifications = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const dataSource_1 = __importDefault(require("../dataSource/dataSource"));
 const Notification_1 = require("../models/Notification");
@@ -32,6 +33,7 @@ const GetUserNotifications = (req, res) => __awaiter(void 0, void 0, void 0, fun
     let notifications = yield notificationRepo.find({ where: { user: user } });
     res.status(http_status_codes_1.StatusCodes.OK).json({ notifications });
 });
+exports.GetUserNotifications = GetUserNotifications;
 const SetAsRead = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (!id) {
@@ -50,6 +52,7 @@ const SetAsRead = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         throw new Error("There is a problem while issuing your request!");
     }
 });
+exports.SetAsRead = SetAsRead;
 const AnyUnreadNotification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
     const user = yield userRepo.findOne({ where: { id: Number(userId) } });
@@ -60,23 +63,4 @@ const AnyUnreadNotification = (req, res) => __awaiter(void 0, void 0, void 0, fu
     const hasUnread = notifications.some(n => !n.isRead);
     res.json({ hasUnread });
 });
-//JWT ilave ettikten sonra acacagiz
-// const SendNotification = async(req:Request,res:Response):Promise<void> => {
-//     const { title, message } = req.body;
-//     const userId = req.user.id; 
-//     const user = await userRepo.findOne({ where: { id: userId } });
-//     if (!user) throw new NotFoundError("User not found");
-//     const notification = notificationRepo.create({
-//         title,
-//         message,
-//         user, // Foreign key burada atanır
-//         isRead: false
-//     });
-//     await notificationRepo.save(notification);
-//     res.status(201).json({ message: "Notification sent" });
-// }
-exports.default = {
-    GetUserNotifications,
-    SetAsRead,
-    AnyUnreadNotification
-};
+exports.AnyUnreadNotification = AnyUnreadNotification;

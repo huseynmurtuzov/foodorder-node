@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GetTotalAmount = exports.GetAverageMealPrice = exports.SearchRestaurants = exports.DeleteRestaurant = exports.UpdateRestaurant = exports.GetRestaurantById = exports.GetAllRestaurants = void 0;
 const dataSource_1 = __importDefault(require("../dataSource/dataSource"));
 const Restaurant_1 = require("../models/Restaurant");
 const RestaurantResponseDTO_1 = require("../dto/RestaurantResponseDTO");
@@ -30,6 +31,7 @@ const GetAllRestaurants = (req, res) => __awaiter(void 0, void 0, void 0, functi
     });
     res.status(http_status_codes_1.StatusCodes.OK).json({ returnRestaurants });
 });
+exports.GetAllRestaurants = GetAllRestaurants;
 const GetRestaurantById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let restaurant = yield restaurantRepository.findOne({ where: { id: Number(req.params.id) } });
     if (!restaurant) {
@@ -38,6 +40,7 @@ const GetRestaurantById = (req, res) => __awaiter(void 0, void 0, void 0, functi
     let dto = new RestaurantResponseDTO_1.RestaurantResponseDTO(restaurant.id, restaurant.role, restaurant.name, restaurant.email, restaurant.phoneNumber, restaurant.address, restaurant.rating, restaurant.image);
     res.status(http_status_codes_1.StatusCodes.OK).json({ dto });
 });
+exports.GetRestaurantById = GetRestaurantById;
 const UpdateRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, phoneNumber, address, image } = req.body;
     const { id } = req.params;
@@ -60,6 +63,7 @@ const UpdateRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, functio
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.UpdateRestaurant = UpdateRestaurant;
 const DeleteRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     let restaurant = yield restaurantRepository.findOne({ where: { id: Number(id) } });
@@ -74,10 +78,31 @@ const DeleteRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, functio
         throw new server_1.ServerError("There is some problem while deleting the data!");
     }
 });
+exports.DeleteRestaurant = DeleteRestaurant;
 const GetAverageMealPrice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    let restaurant = yield restaurantRepository.findOne({ where: { id: Number(id) } });
+    if (!restaurant) {
+        throw new bad_request_1.BadRequestError("There is no restaurant with given id!");
+    }
+    const result = yield dataSource_1.default.query("SELECT dbo.YiyecekFiyatOrtalamasiniAl(?) AS AvgPrice", [id]);
+    const avgPrice = result[0].avgPrice;
+    res.status(http_status_codes_1.StatusCodes.OK).json({ avgPrice });
 });
+exports.GetAverageMealPrice = GetAverageMealPrice;
+const GetTotalAmount = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    let restaurant = yield restaurantRepository.findOne({ where: { id: Number(id) } });
+    if (!restaurant) {
+        throw new bad_request_1.BadRequestError("There is no restaurant with given id!");
+    }
+    const result = yield dataSource_1.default.query("SELECT dbo.TotalCiroyuHesapla(?) AS AllPrice", [id]);
+    const allPrice = result[0].allPrice;
+    res.status(http_status_codes_1.StatusCodes.OK).json({ allPrice });
+});
+exports.GetTotalAmount = GetTotalAmount;
 const SearchRestaurants = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { restaurant } = req.query;
+    const { restaurant } = req.params;
     if (!restaurant || typeof restaurant !== "string") {
         throw new bad_request_1.BadRequestError("Name query param is required");
     }
@@ -86,10 +111,4 @@ const SearchRestaurants = (req, res) => __awaiter(void 0, void 0, void 0, functi
     });
     res.status(http_status_codes_1.StatusCodes.OK).json({ restaurants });
 });
-exports.default = {
-    GetAllRestaurants,
-    GetRestaurantById,
-    UpdateRestaurant,
-    DeleteRestaurant,
-    SearchRestaurants
-};
+exports.SearchRestaurants = SearchRestaurants;

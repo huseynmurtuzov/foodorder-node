@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getMealsOfRestaurant = exports.SearchMeals = exports.DeleteMeal = exports.UpdateMeal = exports.AddMeal = exports.GetMealById = exports.GetAllMeals = void 0;
 const dataSource_1 = __importDefault(require("../dataSource/dataSource"));
 const http_status_codes_1 = require("http-status-codes");
 const Meal_1 = require("../models/Meal");
@@ -26,6 +27,7 @@ const GetAllMeals = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const meals = yield mealsRepo.find();
     res.status(http_status_codes_1.StatusCodes.OK).json({ meals });
 });
+exports.GetAllMeals = GetAllMeals;
 const GetMealById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const meal = yield mealsRepo.findOne({ where: { id: Number(req.params.id) } });
     if (!meal) {
@@ -33,7 +35,8 @@ const GetMealById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     res.status(http_status_codes_1.StatusCodes.OK).json({ meal });
 });
-const AddMeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.GetMealById = GetMealById;
+const AddMeal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, price, description, isAvailable, image, quantity, restaurantId } = req.body;
     if (!name || !price || !restaurantId || !description || !isAvailable || !image || !quantity) {
         throw new bad_request_1.BadRequestError("Please provide all the values");
@@ -59,6 +62,7 @@ const AddMeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.AddMeal = AddMeal;
 const UpdateMeal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, price, description, isAvailable, image } = req.body;
     const { id } = req.params;
@@ -82,6 +86,7 @@ const UpdateMeal = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.UpdateMeal = UpdateMeal;
 const DeleteMeal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     let meal = yield mealsRepo.findOne({ where: { id: Number(id) } });
@@ -96,8 +101,9 @@ const DeleteMeal = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.DeleteMeal = DeleteMeal;
 const SearchMeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { meal } = req.query;
+    const { meal } = req.params;
     if (!meal || typeof meal !== "string") {
         throw new bad_request_1.BadRequestError("Name query param is required");
     }
@@ -106,6 +112,7 @@ const SearchMeals = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     });
     res.status(http_status_codes_1.StatusCodes.OK).json({ meals });
 });
+exports.SearchMeals = SearchMeals;
 const getMealsOfRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { restaurantId } = req.params;
     if (!restaurantId) {
@@ -123,12 +130,4 @@ const getMealsOfRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, fun
         throw new server_1.ServerError("There was some problem durong fetching restaurant meals");
     }
 });
-exports.default = {
-    GetAllMeals,
-    GetMealById,
-    AddMeals,
-    UpdateMeal,
-    DeleteMeal,
-    SearchMeals,
-    getMealsOfRestaurant
-};
+exports.getMealsOfRestaurant = getMealsOfRestaurant;

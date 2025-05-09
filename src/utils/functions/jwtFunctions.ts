@@ -17,7 +17,7 @@ const attachCookieToResponse = (res:Response,userToken:any) => {
 
 const isTokenValid = (token:string) => jwt.verify(token,String(process.env.JWT_SECRET));
 
-export default{
+export {
     createJWT,
     attachCookieToResponse,
     isTokenValid

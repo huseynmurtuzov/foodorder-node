@@ -190,7 +190,7 @@ const GetOrdersByDeliveryPersonnel = async(req:Request,res:Response):Promise<voi
     }
 }
 
-export default {
+export  {
     GetAllOrders,
     GetOrderById,
     AddOrder,

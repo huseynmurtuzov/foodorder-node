@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GetCustomerReviews = exports.GetRestaurantReviewsByRestaurant = exports.AddRestaurantReviews = exports.DeleteRestaurantReviews = exports.UpdateRestaurantReviews = exports.GetRestaurantReviewById = exports.GetAllRestaurantReviews = void 0;
 const dataSource_1 = __importDefault(require("../dataSource/dataSource"));
 const RestaurantReview_1 = require("../models/RestaurantReview");
 const http_status_codes_1 = require("http-status-codes");
@@ -27,6 +28,7 @@ const GetAllRestaurantReviews = (req, res) => __awaiter(void 0, void 0, void 0, 
     const reviews = yield reviewRepo.find();
     res.status(http_status_codes_1.StatusCodes.OK).json({ reviews });
 });
+exports.GetAllRestaurantReviews = GetAllRestaurantReviews;
 const GetRestaurantReviewById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const review = yield reviewRepo.findOne({ where: { id: Number(req.params.id) } });
     if (!review) {
@@ -34,6 +36,7 @@ const GetRestaurantReviewById = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
     res.status(http_status_codes_1.StatusCodes.OK).json({ review });
 });
+exports.GetRestaurantReviewById = GetRestaurantReviewById;
 const AddRestaurantReviews = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rating, comment, customerId, restaurantId } = req.body;
     if (!rating || !comment || !customerId || !restaurantId) {
@@ -61,6 +64,7 @@ const AddRestaurantReviews = (req, res) => __awaiter(void 0, void 0, void 0, fun
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.AddRestaurantReviews = AddRestaurantReviews;
 const UpdateRestaurantReviews = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rating, comment } = req.body;
     const { id } = req.params;
@@ -81,6 +85,7 @@ const UpdateRestaurantReviews = (req, res) => __awaiter(void 0, void 0, void 0, 
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.UpdateRestaurantReviews = UpdateRestaurantReviews;
 const DeleteRestaurantReviews = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     let review = yield reviewRepo.findOne({ where: { id: Number(id) } });
@@ -95,6 +100,7 @@ const DeleteRestaurantReviews = (req, res) => __awaiter(void 0, void 0, void 0, 
         throw new server_1.ServerError("There is some problem!");
     }
 });
+exports.DeleteRestaurantReviews = DeleteRestaurantReviews;
 const GetRestaurantReviewsByRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { restaurantId } = req.params;
     if (!restaurantId) {
@@ -112,6 +118,7 @@ const GetRestaurantReviewsByRestaurant = (req, res) => __awaiter(void 0, void 0,
         throw new server_1.ServerError("There was some problem durong fetching restaurant reviews");
     }
 });
+exports.GetRestaurantReviewsByRestaurant = GetRestaurantReviewsByRestaurant;
 const GetCustomerReviews = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { customerId } = req.params;
     if (!customerId) {
@@ -129,12 +136,4 @@ const GetCustomerReviews = (req, res) => __awaiter(void 0, void 0, void 0, funct
         throw new server_1.ServerError("There was some problem durong fetching customer reviews");
     }
 });
-exports.default = {
-    GetAllRestaurantReviews,
-    GetRestaurantReviewById,
-    UpdateRestaurantReviews,
-    DeleteRestaurantReviews,
-    AddRestaurantReviews,
-    GetRestaurantReviewsByRestaurant,
-    GetCustomerReviews
-};
+exports.GetCustomerReviews = GetCustomerReviews;

@@ -7,6 +7,15 @@ import fileUploader from 'express-fileupload'
 import notFoundMiddleware from './middleware/not-found';
 import 'express-async-errors'
 import errorHandlerMiddleware  from './middleware/error-handler';
+import authRouter from './routes/accountRoutes'
+import customerRouter from './routes/customerRoutes'
+import deliveryPersonnelRouter from './routes/deliveryPersonnelRoutes'
+import mealsRouter from './routes/mealRoutes'
+import notificationsRouter from './routes/notificationRoutes'
+import ordersRouter from './routes/orderRoutes'
+import paymentRouter from './routes/paymentRoutes'
+import restaurantReviewsRouter from './routes/restaurantReviewRoutes'
+import restaurantsRouter from './routes/restaurantRoutes'
 dotenv.config();
 const app = express();
 app.use(morgan('tiny'));
@@ -16,22 +25,21 @@ app.use(express.static('./public'))
 app.use(fileUploader())
 
 //routes
-
-
-
-
-
+app.use('/api/Account',authRouter);
+app.use('/api/Customers',customerRouter);
+app.use('/api/DeliveryPersonnel',deliveryPersonnelRouter);
+app.use('/api/Meals',mealsRouter);
+app.use('/api/Notifications',notificationsRouter);
+app.use('/api/Orders',ordersRouter);
+app.use('/api/Payments',paymentRouter);
+app.use('/api/RestaurantReviews',restaurantReviewsRouter);
+app.use('/api/Restaurants',restaurantsRouter)
 
 
 //last middlewares
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
 
-// dataSource.initialize().then(() => {
-//     console.log("Success")
-// }).catch((err) => {
-//     console.log(err)
-// });
 const start  = async():Promise<void> => {
     try {
         await dataSource.initialize()

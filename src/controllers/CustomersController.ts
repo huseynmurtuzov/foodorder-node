@@ -33,7 +33,7 @@ const GetCustomerById = async (req:Request,res:Response) : Promise<void> => {
 
 const EditCustomer = async (req:Request,res:Response) : Promise<void> => {
     const {name,phoneNumber,address} = req.body
-    let id = req.params
+    let {id} = req.params
     if(!id || !name || !phoneNumber || !address){
         throw new BadRequestError("Please provide all the values")
     }
@@ -69,7 +69,7 @@ const DeleteCustomer = async (req:Request,res:Response) : Promise<void> => {
     }
 }
 
-export default {
+export {
     GetAllCustomers,
     GetCustomerById,
     EditCustomer,

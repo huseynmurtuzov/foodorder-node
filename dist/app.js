@@ -21,6 +21,15 @@ const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const not_found_1 = __importDefault(require("./middleware/not-found"));
 require("express-async-errors");
 const error_handler_1 = __importDefault(require("./middleware/error-handler"));
+const accountRoutes_1 = __importDefault(require("./routes/accountRoutes"));
+const customerRoutes_1 = __importDefault(require("./routes/customerRoutes"));
+const deliveryPersonnelRoutes_1 = __importDefault(require("./routes/deliveryPersonnelRoutes"));
+const mealRoutes_1 = __importDefault(require("./routes/mealRoutes"));
+const notificationRoutes_1 = __importDefault(require("./routes/notificationRoutes"));
+const orderRoutes_1 = __importDefault(require("./routes/orderRoutes"));
+const paymentRoutes_1 = __importDefault(require("./routes/paymentRoutes"));
+const restaurantReviewRoutes_1 = __importDefault(require("./routes/restaurantReviewRoutes"));
+const restaurantRoutes_1 = __importDefault(require("./routes/restaurantRoutes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, morgan_1.default)('tiny'));
@@ -29,14 +38,18 @@ app.use((0, cookie_parser_1.default)(process.env.JWT_SECRET));
 app.use(express_1.default.static('./public'));
 app.use((0, express_fileupload_1.default)());
 //routes
+app.use('/api/Account', accountRoutes_1.default);
+app.use('/api/Customers', customerRoutes_1.default);
+app.use('/api/DeliveryPersonnel', deliveryPersonnelRoutes_1.default);
+app.use('/api/Meals', mealRoutes_1.default);
+app.use('/api/Notifications', notificationRoutes_1.default);
+app.use('/api/Orders', orderRoutes_1.default);
+app.use('/api/Payments', paymentRoutes_1.default);
+app.use('/api/RestaurantReviews', restaurantReviewRoutes_1.default);
+app.use('/api/Restaurants', restaurantRoutes_1.default);
 //last middlewares
 app.use(not_found_1.default);
 app.use(error_handler_1.default);
-// dataSource.initialize().then(() => {
-//     console.log("Success")
-// }).catch((err) => {
-//     console.log(err)
-// });
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield dataSource_1.default.initialize();
